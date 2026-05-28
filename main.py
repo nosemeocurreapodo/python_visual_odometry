@@ -50,8 +50,8 @@ keyframepose = SE3.identity()
       
 for imIndex in range(0,500):
 
-  pose = pose_reader("../../../desktop_dataset_2/scene_%03d.txt.new" % (imIndex))
-  image = cv2.imread("../../../desktop_dataset_2/scene_%03d.png" % (imIndex), cv2.IMREAD_GRAYSCALE)
+  pose = pose_reader("./dataset/desktop_dataset/poses/scene_%03d.txt.new" % (imIndex))
+  image = cv2.imread("./dataset/desktop_dataset/images/scene_%03d.png" % (imIndex), cv2.IMREAD_GRAYSCALE)
   
   if imIndex == 0:
     keyframepose = copy.copy(pose)
