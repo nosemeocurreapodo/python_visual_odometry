@@ -41,7 +41,7 @@ class frameData:
     for lvl in range(0, params.MAX_LEVELS):
       width = int(params.IMAGE_WIDTH/(2**lvl))
       height = int(params.IMAGE_HEIGHT/(2**lvl))
-      self.image[lvl] = cv2.resize(image, (width, height), cv2.INTER_AREA)
+      self.image[lvl] = cv2.resize(image, (width, height), interpolation=cv2.INTER_AREA)
       self.computeDerivative(lvl)
       """
       if lvl == 0:
@@ -57,5 +57,5 @@ class frameData:
     for lvl in range(0, params.MAX_LEVELS):
       width = int(params.IMAGE_WIDTH/(2**lvl))
       height = int(params.IMAGE_HEIGHT/(2**lvl))
-      self.invDepth[lvl] = cv2.resize(_invDepth, (width, height), cv2.INTER_AREA)
-      self.invDepthVar[lvl] = cv2.resize(_invDepthVar, (width, height), cv2.INTER_AREA)
+      self.invDepth[lvl] = cv2.resize(_invDepth, (width, height), interpolation=cv2.INTER_NEAREST)
+      self.invDepthVar[lvl] = cv2.resize(_invDepthVar, (width, height), interpolation=cv2.INTER_NEAREST)

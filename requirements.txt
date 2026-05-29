@@ -1,0 +1,4 @@
+pytest
+numpy==1.26.1
+opencv-python-headless
+liegroups @ https://github.com/utiasSTARS/liegroups/archive/2d20ac60419fa7316f18906defd39d3623f4e5e7.zip

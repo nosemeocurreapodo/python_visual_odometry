@@ -1,0 +1,11 @@
+services:
+  dev:
+    build:
+      context: .
+    image: python-visual-odometry-dev
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+    command: bash
+    tty: true
+    stdin_open: true
