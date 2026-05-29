@@ -1,11 +1,10 @@
 import copy
 
 import numpy as np
-import pytest
-
 import camera as camera_module
 import frameData
 import invdepth_estimator_costVolume
+import invdepth_estimator_kalman
 import params
 
 
@@ -47,7 +46,6 @@ def test_cost_volume_depth_outputs_match_estimator_level_shape(monkeypatch):
     assert np.all(inv_depth_var > 0.0)
 
 
-@pytest.mark.xfail(reason="A monocular depth estimator should reject zero-baseline observations.")
 def test_zero_baseline_update_does_not_accumulate_depth_evidence(monkeypatch):
     use_small_images(monkeypatch)
     cam = make_camera()
@@ -59,3 +57,16 @@ def test_zero_baseline_update_does_not_accumulate_depth_evidence(monkeypatch):
     estimator.update(frame, keyframe)
 
     np.testing.assert_array_equal(estimator.obsCount, obs_count_before)
+
+
+def test_kalman_outlier_removal_ignores_image_borders(monkeypatch):
+    use_small_images(monkeypatch)
+    cam = make_camera()
+    estimator = invdepth_estimator_kalman.invdepth_estimator_kalman(cam, lvl=1)
+    inv_depth = -1.0 * np.ones((cam.height[1], cam.width[1]), dtype=np.float32)
+    inv_depth_var = np.ones((cam.height[1], cam.width[1]), dtype=np.float32)
+    inv_depth[-1, -1] = 0.5
+
+    estimator.removeOutliers(inv_depth, inv_depth_var)
+
+    assert inv_depth[-1, -1] == 0.5

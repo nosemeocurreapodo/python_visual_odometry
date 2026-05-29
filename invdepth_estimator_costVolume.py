@@ -112,6 +112,9 @@ class invdepth_estimator_costVolume:
     cyinv = self.camera.cyinv[lvl]
 
     relativePose = frame.pose.dot(keyframe.pose.inv())
+    relativeTranslation = relativePose.as_matrix()[:3,3]
+    if np.linalg.norm(relativeTranslation) < 1e-9:
+      return
      
     for y in range(1, height-1):
       for x in range(1, width-1):

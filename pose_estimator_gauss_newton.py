@@ -7,8 +7,9 @@ import frameData
 import common
 
 class pose_estimator_gauss_newton:
-  def __init__(self, camera):
+  def __init__(self, camera, visualize=False):
     self.camera = camera
+    self.visualize = visualize
     self.lastPoseDiff = SE3.identity() 
 
   def computeError(self, frame, keyframe, lvl):
@@ -181,11 +182,16 @@ class pose_estimator_gauss_newton:
                 #frame.pose = (SE3.exp(inc_pose).inv()).dot(bestPose)
 
                 [error, errorImage] = self.computeError(frame, keyframe, lvl)
-                #errorNorm = errorImage
-                errorNorm = (errorImage - np.amin(errorImage))/(np.amax(errorImage) - np.amin(errorImage))
-                cv2.namedWindow("error", cv2.WINDOW_NORMAL)
-                cv2.imshow("error", errorNorm)
-                cv2.waitKey(30)
+                if self.visualize:
+                    errorMin = np.amin(errorImage)
+                    errorMax = np.amax(errorImage)
+                    if errorMax > errorMin:
+                        errorNorm = (errorImage - errorMin)/(errorMax - errorMin)
+                    else:
+                        errorNorm = np.zeros_like(errorImage)
+                    cv2.namedWindow("error", cv2.WINDOW_NORMAL)
+                    cv2.imshow("error", errorNorm)
+                    cv2.waitKey(30)
         
                 #print("new error: ", error, "lambda: ", lamb)
 

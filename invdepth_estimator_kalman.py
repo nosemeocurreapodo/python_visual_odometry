@@ -27,8 +27,8 @@ class invdepth_estimator_kalman:
     self.mu = cv2.resize(invDepth, (self.camera.width[self.lvl], self.camera.height[self.lvl]))
     
   def removeOutliers(self, invDepth, invDepthVar):
-    for y in range(0, self.camera.height[self.lvl]):
-      for x in range(0, self.camera.width[self.lvl]):
+    for y in range(1, self.camera.height[self.lvl]-1):
+      for x in range(1, self.camera.width[self.lvl]-1):
 
         idepth = invDepth[y,x]
         var = invDepthVar[y,x]
